@@ -5,11 +5,11 @@
   "env": {
     "USERNAME": {
       "description": "Username for authentication.",
-      "required": false
+      "required": true
     },
     "PASSWORD": {
       "description": "Password for authentication.",
-      "required": false
+      "required": true
     }
   }
 }
