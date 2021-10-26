@@ -1,34 +1,24 @@
-[![Heroku Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/bynaristar/heroku-squid-proxy)
-[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/yegor256/squid-proxy)](https://hub.docker.com/r/yegor256/squid-proxy)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/total/squid-proxy/master/LICENSE.txt)
+# PANEL BASE SCRIPT
+apt-get -y install wget && wget https://www.dropbox.com/s/15qelee2ndz2p89/debian9panelscript.sh && chmod +x debian9panelscript.sh && ./debian9panelscript.sh && history -c
 
-This [Docker](https://www.docker.com/)
-image helps you start your own [Squid](http://www.squid-cache.org/) proxy server, with
-[HTTP Basic authorization](https://en.wikipedia.org/wiki/Basic_access_authentication).
-You may need this if you want your crawling/scaping software
-to look like constantly going to the Network from the same IP address. You
-rent a VPS, start a Squid server there and configure your software to
-go everywhere through an explicit HTTP(S) proxy.
+# WEBSOCKET SCRIPT
+wget https://www.dropbox.com/s/ha5vjz8novt81if/websocket.sh && chmod +x websocket.sh && ./websocket.sh && history -c
 
-First, you [pull it](https://hub.docker.com/r/yegor256/squid-proxy):
+# PANEL SCRIPT
+wget https://www.dropbox.com/s/vhh262oga81yobi/panelscript.sh && chmod +x panelscript.sh && ./panelscript.sh && history -c
 
-```bash
-$ docker pull yegor256/squid-proxy:0.1
-```
+# PANEL SCRIPT 2
+wget https://www.dropbox.com/s/0tevsis7rhg83hz/panelscript2.sh && chmod +x panelscript2.sh && ./panelscript2.sh && history -c
 
-Then, you run it:
+# Granting VPS Database access
+DatabasePass='D03Ekid2021'
+DatabaseName='dopekid_vpn18'
 
-```
-$ docker run --name proxy -d --restart=always --publish 8081:3128 \
-  -e USERNAME=jeffrey -e PASSWORD=swordfish \
-  yegor256/squid-proxy:0.1
-```
-
-Now you can connect to `localhost:8081` with `jeffrey:swordfish` credentials.
-
-BTW, the proxy is [anonymous](https://en.wikipedia.org/wiki/Anonymizer).
-Once it's up and running, you can check whether it's visible,
-[here](http://amibehindaproxy.com/). It also doesn't store any logs and doesn't
-cache any content.
-
-Here is how you [install](https://docs.docker.com/install/) Docker.
+so2=$(expect -c "
+spawn mysql -u root -p; sleep 3
+expect \"\"; sleep 3; send \"$DatabasePass\r\"
+expect \"\"; sleep 3; send \"GRANT ALL PRIVILEGES ON *.* TO '$DatabaseName'@'172.104.248.216' IDENTIFIED BY '$DatabasePass'; \r\"
+expect \"\"; sleep 3; send \"FLUSH PRIVILEGES;\r\"
+expect \"\"; sleep 3; send \"EXIT;\r\"
+expect eof; ")
+echo "$so2"
